@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Layout } from "../components/Layout";
 import { Header } from "../components/Header";
-import { InputLayout } from "../components/InputLayout";
 import { ButtonLayout } from "../components/ButtonLayout";
 import { InputRange } from "../components/InputRange";
 import { CheckBoxGenre } from "../components/CheckBoxGenre";
@@ -12,30 +11,53 @@ import { ImageUploadButton } from "../components/ImageUploadButton";
 import { RatingComponent } from "../components/RatingComponent";
 import useUploadimage from "../hooks/useUploadimage";
 import { useGonre } from "../hooks/useGonre";
-
+import { MovieContext } from "../context/MovieContext";
+import axios from "axios";
 
 export const AddEditMovie = () => {
+  const API_URL = "http://localhost:3007/api/movies/upload";
 
-  const [rangeValue, setRatingValue] = useState("");
-  const{getGonreList,genre} =useGonre()
+  const [checkedstate, setCheckedState] = useState({ genre: [] });
+
+  const [title, setTitle] = useState();
+
+  const { movie, setMovie } = useContext(MovieContext);
+  const { imageUpload, path } = useUploadimage(); //hook call for image upload
+
+  const [rangeValue, setRatingValue] = useState(5);
+  const { getGonreList, genre } = useGonre();
   const [image, setImage] = useState("");
 
+  const addNewMovie = async (event) => {
+    event.preventDefault();
+    const movieData = new FormData();
+    movieData.append("title", title);
+    movieData.append("genre", checkedstate.genre);
+    movieData.append("ratings", rangeValue);
+    movieData.append("movieFile", image);
+    movieData.append("path", "");
+
+    //Add Movie
+    const response = await axios(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: movieData,
+    });
+
+    if (!response) return;
+  };
+
+  const inputTextHandleChange = (event) => {
+    setTitle(event.target.value);
+  };
 
 
-    const {imageUpload}=useUploadimage();  //hook call for image upload
-    const MovieImageUpload=()=>{
-        // console.log(image,"----");
-      const response=  imageUpload({image});
-      console.log(response.data,"respo=====")
-    }
+  useEffect(() => {
+    getGonreList();
+  }, []);
 
-
-
-    useEffect(()=>{
-        getGonreList();
-        
-    },[])
-    
   return (
     <>
       <Layout>
@@ -48,7 +70,10 @@ export const AddEditMovie = () => {
                 New Movie
               </h2>
               <ImageUploadButton setImage={setImage} />
-              <InputSecond placeHolder={"Movie Name"}/>
+              <InputSecond
+                placeHolder={"Movie Name"}
+                inputTextHandleChange={inputTextHandleChange}
+              />
               <InputRange setRatingValue={setRatingValue} />
               <RatingComponent rate={rangeValue} />
               <label
@@ -56,11 +81,15 @@ export const AddEditMovie = () => {
                 className="font-bold flex justify-center  items-center pt-5"
               >
                 Genre
-              </label>  
+              </label>
               <CardContainer>
-              <CheckBoxGenre genreValue={genre}/>
+                <CheckBoxGenre
+                  genreValue={genre}
+                  checkedstate={checkedstate}
+                  setCheckedState={setCheckedState}
+                />
               </CardContainer>
-              <ButtonLayout title={"Submit"} clik={MovieImageUpload} />
+              <ButtonLayout title={"Submit"} clik={addNewMovie} />
             </LayoutSecond>
           </div>
         </div>

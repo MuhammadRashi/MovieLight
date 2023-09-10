@@ -7,7 +7,8 @@ import { CardContainer } from '../components/CardContainer'
 import axios from 'axios';
 import { Card } from '../components/Card'
 export const MovieDB = () => {
-  const API_URL="http://localhost:3007/api/movies";
+  // const API_URL="http://localhost:3007/api/movies";
+  const API_URL="http://localhost:3007/api/movies/movieWithGenre";
 
   // const [movieList,setMovieList]=useState();
   const [movieList,setMovieList]=useState([]);
@@ -36,7 +37,7 @@ export const MovieDB = () => {
          <CardContainer>
           {movieList && movieList.map((movie)=>(
             
-           <><div key={movie._id}><Card movie={movie}/></div></> 
+           <><div key={movie._id}><Card movie={movie} key={movie._id}/></div></> 
            
           )
             

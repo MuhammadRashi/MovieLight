@@ -20,7 +20,10 @@ const movieSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Genres",
     }
-    ]
+    ],
+    url:{
+        type:String,
+    },
 
 },{timestamps:true})
 

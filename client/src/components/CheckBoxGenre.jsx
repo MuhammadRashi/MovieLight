@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 
-export const CheckBoxGenre = ({ genreValue }) => {
-  const [checkedstate, setCheckedState] = useState({ genre: [] });
+export const CheckBoxGenre = ({ genreValue,checkedstate,setCheckedState }) => {
+  // const [checkedstate, setCheckedState] = useState({ genre: [] });
 
   const handleCheckBox = (event) => {
     const { value, name, checked } = event.target;
@@ -19,7 +19,7 @@ export const CheckBoxGenre = ({ genreValue }) => {
       [name]: newGenre,
     }));
   };
-  console.log(checkedstate.genre, "=====items");
+  // console.log(checkedstate.genre, "=====items");
 
   
   return (

@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/api/users",userRouter);
 app.use("/api/movies",moviesRouter);
 app.use("/api/genre",genreRouter);
-
+app.use('/images',express.static('public/images'));
 
 
 
