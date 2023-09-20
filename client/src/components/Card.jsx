@@ -6,7 +6,6 @@ import { FaPen, FaTrashAlt, FaStar } from "react-icons/fa";
 export const Card = ({ movie }) => {
   // console.log(movie,"---0--0-0-0-000-0")
   return (
-    <>
       <div className="relative group">
         <div className="absolute top-0 left-0 right-0 p-2 px-4 text-white bg-opacity-40">
         <p className="p-2 rounded-md text-lg md:text-xl lg:text-2xl font-bold hover:bg-black hover:bg-opacity-40 hover:md:text-2xl hover:lg:text-3xl hover:md:text-center">{movie.title}</p>
@@ -37,6 +36,5 @@ export const Card = ({ movie }) => {
           </div>
         </div>
       </div>
-    </>
   );
 };

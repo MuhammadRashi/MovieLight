@@ -1,21 +1,51 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { FaFileImage } from "react-icons/fa";
+import { ErrorObjectContext } from "../context/ErrorObject";
+import { ErrorDiv } from "./ErrorDiv";
 
-export const ImageUploadButton = ({ setImage }) => {
+export const ImageUploadButton = ({ setImage,impagePreview,setImagePreview}) => {
   const inputFile = useRef(null);
-  const [impagePreview, setImagePreview] = useState("");
+  const errorDiv = useRef(null);
+  // const [impagePreview, setImagePreview] = useState("");
+  const { errors, SettErrorObject, DeleteErrorObj} =
+    useContext(ErrorObjectContext);
 
-  const onClickHandle = () => {
-    inputFile.current.click();
+    // removeImage=()=>{
+    //   setImagePreview(URL.revokeObjectURL(impagePreview));
+    // }
+
+  const onClickHandle = (event) => {
+    try {
+
+      inputFile.current.click();
+      let keyLeng = errors.filter((item) => item["myfile"]).length;
+      
+      if(keyLeng===0){
+        SettErrorObject("myfile", "Add one Image ");
+      }
+      setImagePreview(URL.revokeObjectURL(impagePreview));
+      // removeImage();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const onHandleChange = (event) => {
-    // console.log(event.target.files[0]);
-    setImage(event.target.files[0]);
-    setImagePreview(URL.createObjectURL(event.target.files[0]));
+    if (event.target.files[0]) {
+
+      // let leng = errors.filter((item) => item["myfile"]).length;
+      DeleteErrorObj("myfile");
+      errorDiv.value = "";
+      // console.log(leng, "=======ddddddddddddd==length");
+
+      setImage(event.target.files[0]);
+      setImagePreview(URL.createObjectURL(event.target.files[0]));
+    } else {
+      // DeleteErrorObj("myfile");
+    }
   };
 
-//   console.log(impagePreview,"===========image preview address");
+  //   console.log(impagePreview,"===========image preview address");
   return (
     <div className="">
       <label htmlFor="myfile" className="font-bold flex justify-center mb-2">
@@ -43,6 +73,25 @@ export const ImageUploadButton = ({ setImage }) => {
           />
         )}
       </div>
+      <>
+
+      <ErrorDiv keyArray="myfile"/>
+        {/* {errors.map((err, index) => {
+          if (err["myfile"]) {
+            // console.log("dadfladfjaldf-----");
+
+            return (
+              <div
+                key={index}
+                ref={errorDiv}
+                className="text-center text-red-500"
+              >
+                {err["myfile"]}
+              </div>
+            );
+          }
+        })} */}
+      </>
     </div>
   );
 };

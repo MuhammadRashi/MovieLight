@@ -7,7 +7,7 @@ export const InputLayout = ({ placeholder }) => {
         <div className="flex justify-between border-b">
           <input
             type="text"
-            className="border border-none md:w-80 focus:outline-none placeholder:font-thin placeholder:text-center"
+            className="border border-none md:w-80 focus:outline-none placeholder:font-thin placeholder:text-center placeholder:hover:text-black"
             placeholder={placeholder}
           />
         </div>

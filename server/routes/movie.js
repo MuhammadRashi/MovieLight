@@ -79,7 +79,7 @@ router.get("/movieWithGenre/",async(req, res)=>{
         // .populate("genera",'title');
 
 
-        const movieList = await Movies.find().select("title ratings url -_id").populate("genera",'title _id');
+        const movieList = await Movies.find().select("title ratings url _id").populate("genera",'title _id');
         res.status(200).json(movieList);
     } catch (error) {
         res.status(400).json({

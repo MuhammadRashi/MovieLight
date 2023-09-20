@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { ErrorObjectContext } from '../context/ErrorObject';
 
 export const InputRange = ({setRatingValue}) => {
+  const { errors, SettErrorObject, DeleteErrorObj} =
+    useContext(ErrorObjectContext);
 
   const onHandleChange=(event)=>{
 
    setRatingValue(event.target.value);
+   if(event.target.value >=1){
 
+     DeleteErrorObj("rating")
+    }else{
+      
+      DeleteErrorObj("rating")
+       SettErrorObject("rating","Select at least one rate");
+    }
   }
 
   return (

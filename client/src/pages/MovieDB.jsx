@@ -16,10 +16,10 @@ export const MovieDB = () => {
   const fetchMovies=async()=>{
 
     const mList=await axios.get(API_URL);
-    console.log(mList.data,"====");
+    // console.log(mList.data,"====");
      setMovieList(mList.data);
   }
-  console.log(movieList,"--------out--movisadfjald-")
+  // console.log(movieList,"--------out--movisadfjald-")
   useEffect(()=>{
 
     fetchMovies();
@@ -37,11 +37,9 @@ export const MovieDB = () => {
          <CardContainer>
           {movieList && movieList.map((movie)=>(
             
-           <><div key={movie._id}><Card movie={movie} key={movie._id}/></div></> 
+           <div key={movie._id}><Card movie={movie}/></div> 
            
           )
-            
-            
             )} 
          </CardContainer>
 
