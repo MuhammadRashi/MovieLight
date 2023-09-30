@@ -2,8 +2,11 @@ import React from "react";
 import { RatingComponent } from "./RatingComponent";
 
 import { FaPen, FaTrashAlt, FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const Card = ({ movie }) => {
+
+  const navigate= useNavigate()
   // console.log(movie,"---0--0-0-0-000-0")
   return (
       <div className="relative group">
@@ -21,7 +24,7 @@ export const Card = ({ movie }) => {
 
             <div className="flex items-center space-x-1 ">
               {/* <img src="images/bookmark.svg" alt=""/> */}
-              <FaPen className="text-3xl opacity-70 hover:opacity-100" />
+              <FaPen className="text-3xl opacity-70 hover:opacity-100" onClick={()=>navigate(`/new/${movie._id}`)}  />
               <FaTrashAlt className="text-3xl opacity-70 hover:opacity-100" />
             </div>
           </div>

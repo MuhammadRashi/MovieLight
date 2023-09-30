@@ -2,19 +2,20 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ErrorObjectContext } from "../context/ErrorObject";
 
 
-export const CheckBoxGenre = ({ genreValue,checkedstate,setCheckedState,checkRef,cnt,setCnt }) => {
-  let dd;
+export const CheckBoxGenre = ({genreValue,checkedstate,setCheckedState,checkRef,chkbxGroup}) => {
   const { errors, SettErrorObject, DeleteErrorObj} =
     useContext(ErrorObjectContext);
     // const [cnt,setCnt]=useState(0);
-    let i=0;
-    const tempRef=useRef([]);
+    // let i=0;
+    // const tempRef=useRef([]);
     // const tempRef = useRef(new Array())
 
     const handleCheckBox = (event) => {
       const { value, name, checked } = event.target;
       let newGenre = [...checkedstate.genre];
       // let newRef = [...checkRef];
+
+      // console.log(name,"===========");
       
       if (checked) {
         newGenre.push(value);
@@ -59,7 +60,13 @@ export const CheckBoxGenre = ({ genreValue,checkedstate,setCheckedState,checkRef
       ...prev,
       [name]: newGenre,
     }));
+
+
+    // checkRef.current.checked.map((mp) => (mp.checked = false));
+    // newGenre =  checkRef.current.filter((chk) => genre != value);
     
+
+    // console.log(checkedstate.genre,"===========");
     };
 
 
@@ -74,6 +81,38 @@ export const CheckBoxGenre = ({ genreValue,checkedstate,setCheckedState,checkRef
             <div
               className="flex flex-row items-center justify-center space-x-3"
               key={gnitem._id}
+              ref={chkbxGroup}
+            >
+              <input
+                key={gnitem._id}
+                type="checkbox"
+                name={"genre" || ''} 
+                id={gnitem._id || ''}
+                value={gnitem._id || ''}
+                className="w-6 h-6 checked:bg-blue-500"
+                onChange={handleCheckBox}
+                // ref={(element) => tempRef.current.push(element)}
+                // ref={(element) => tempRef.current.push(element)}
+                ref={(element) => checkRef.current[index]=element}           // used for dynamic ref
+
+                checked={checkedstate.genre ? checkedstate.genre.find((gon)=> gon === gnitem._id) : null}
+
+              />
+              <label htmlFor={gnitem._id}>{gnitem.title} </label>
+            </div>
+          </div>
+         
+         
+        
+        ))}
+
+{/* {genreValue &&
+        genreValue.map((gnitem,index) => (
+          <div key={gnitem._id}>
+            <div
+              className="flex flex-row items-center justify-center space-x-3"
+              key={gnitem._id}
+              ref={chkbxGroup}
             >
               <input
                 key={gnitem._id}
@@ -86,6 +125,7 @@ export const CheckBoxGenre = ({ genreValue,checkedstate,setCheckedState,checkRef
                 // ref={(element) => tempRef.current.push(element)}
                 // ref={(element) => tempRef.current.push(element)}
                 ref={(element) => checkRef.current[index]=element}           // used for dynamic ref
+
               />
               <label htmlFor={gnitem._id}>{gnitem.title} </label>
             </div>
@@ -93,7 +133,7 @@ export const CheckBoxGenre = ({ genreValue,checkedstate,setCheckedState,checkRef
          
          
         
-        ))}
+        ))} */}
     </>
   );
 };

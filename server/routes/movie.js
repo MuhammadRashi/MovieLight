@@ -89,6 +89,44 @@ router.get("/movieWithGenre/",async(req, res)=>{
 })
 
 
+
+// update Movie details
+
+// router.get("/movieEdit/:movieId",async(req,res)=>{
+
+// router.put("/movieUpdate/:movieId",(req,res)=>{
+//     try {
+//         console.log(req.body.title,"body.............");
+       
+//         res.status(200).json(req.params.movieId);
+        
+        
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+    
+// })
+
+
+router.get("/movieEdit/:movieId",async(req,res)=>{
+    try {
+        const editMovie = await Movies.findOne({ _id: req.params.movieId })
+
+        // _id:req.params.userId
+
+
+
+        res.status(200).json(editMovie);
+        // if (!isMovieExist) {
+        //     const movieList = await Movies.create(req.body);
+        //     res.status(200).json(movieList);
+        // }
+        
+    } catch (error) {
+        
+    }
+})
+
 // -------------------------------------
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -105,7 +143,7 @@ const storage = multer.diskStorage({
 //   --------------------------
 
 router.post("/upload",upload.single("movieFile"),async(req,res)=>{
-    // console.log(req.body,"body.............");
+    console.log(req.body,"body.............");
     // const {title,ratings,genre,path}=req.body
     
     // const newMovieData={
@@ -120,7 +158,7 @@ router.post("/upload",upload.single("movieFile"),async(req,res)=>{
     
     
     const genrresData = req.body.genre.split(",");  //conver to array
-    // console.log(genrresData,"=====sds=====path");
+    console.log(genrresData,"=====sds=====path");
     
     const newMovieData={
         title:req.body.title,
@@ -128,8 +166,47 @@ router.post("/upload",upload.single("movieFile"),async(req,res)=>{
         genera:genrresData,
         url:baseURL+req.file.filename,
     }
-    // console.log(newMovieData,"finished data........");
+    console.log(newMovieData,"finished data........");
     const movieList = await Movies.create(newMovieData);
+
+    res.json({
+        message:"Image uploaded",
+        path:baseURL+req.file.filename,
+        movieList:movieList
+    })
+            // res.status(200).json(movieList);
+})
+
+
+// router.put("/upload",upload.single("movieFile"),async(req,res)=>{
+
+router.put("/upload",async(req,res)=>{
+    console.log(req.body,"body.............");
+    // const {title,ratings,genre,path}=req.body
+    
+    // const newMovieData={
+    //     title:"",
+    //     ratings:"",
+    //     genera:[],
+    //     path:""
+        
+    // }
+    
+    // const baseURL = `${req.protocol}://${req.get("host")}/images/`;
+    
+    
+    const genrresData = req.body.genre.split(",");  //conver to array
+    // console.log(genrresData,"=====sds=====path");
+    
+    const newMovieData={
+        movieId:req.body.movieId,
+        title:req.body.title,
+        ratings:req.body.ratings,
+        genera:genrresData,
+        url:baseURL+req.file.filename,
+    }
+    console.log(newMovieData,"finished data........");
+    // const movieList = await Movies.create(newMovieData);
 
     res.json({
         message:"Image uploaded",

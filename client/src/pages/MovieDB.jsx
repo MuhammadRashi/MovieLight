@@ -10,9 +10,12 @@ export const MovieDB = () => {
   // const API_URL="http://localhost:3007/api/movies";
   const API_URL="http://localhost:3007/api/movies/movieWithGenre";
 
+  
+
+  
   // const [movieList,setMovieList]=useState();
   const [movieList,setMovieList]=useState([]);
-
+  
   const fetchMovies=async()=>{
 
     const mList=await axios.get(API_URL);
@@ -23,6 +26,7 @@ export const MovieDB = () => {
   useEffect(()=>{
 
     fetchMovies();
+    
 
   },[])
   return (<>
@@ -35,9 +39,9 @@ export const MovieDB = () => {
           
           
          <CardContainer>
-          {movieList && movieList.map((movie)=>(
+          {movieList && movieList.map((movie,index)=>(
             
-           <div key={movie._id}><Card movie={movie}/></div> 
+           <div key={index}><Card movie={movie}/></div> 
            
           )
             )} 

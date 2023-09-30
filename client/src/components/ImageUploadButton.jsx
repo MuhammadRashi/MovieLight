@@ -45,7 +45,7 @@ export const ImageUploadButton = ({ setImage,impagePreview,setImagePreview}) => 
     }
   };
 
-  //   console.log(impagePreview,"===========image preview address");
+    // console.log(impagePreview,"===========image preview address");
   return (
     <div className="">
       <label htmlFor="myfile" className="font-bold flex justify-center mb-2">
