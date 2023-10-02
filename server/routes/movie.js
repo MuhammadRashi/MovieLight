@@ -7,6 +7,11 @@ const {addTest}=require('../middlewares/test');
 const app=express();
 
 
+  
+// Import the filesystem module
+const fs = require('fs');
+const { url } = require('inspector');
+
 app.use('/images',express.static('public/images'));
 
 router.get("/", async (req, res) => {
@@ -129,6 +134,10 @@ router.get("/movieEdit/:movieId",async(req,res)=>{
 
 // -------------------------------------
 const storage = multer.diskStorage({
+
+
+ 
+
     destination: function (req, file, cb) {
       cb(null, 'public/images')
     },
@@ -138,12 +147,17 @@ const storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + uniqueSuffix + "." + extension);
     }
   })
-  const upload = multer({ storage: storage })
+  const upload = multer({
+   
+        
+        storage: storage 
+    
+})
 
 //   --------------------------
 
 router.post("/upload",upload.single("movieFile"),async(req,res)=>{
-    console.log(req.body,"body.............");
+    // console.log(req.body,"body.............");
     // const {title,ratings,genre,path}=req.body
     
     // const newMovieData={
@@ -153,12 +167,13 @@ router.post("/upload",upload.single("movieFile"),async(req,res)=>{
     //     path:""
         
     // }
-    
+   
     const baseURL = `${req.protocol}://${req.get("host")}/images/`;
     
+    // console.log( req.body.genre,"=====sds=====path");
     
     const genrresData = req.body.genre.split(",");  //conver to array
-    console.log(genrresData,"=====sds=====path");
+    // console.log(genrresData,"=====sds=====path");
     
     const newMovieData={
         title:req.body.title,
@@ -178,39 +193,35 @@ router.post("/upload",upload.single("movieFile"),async(req,res)=>{
 })
 
 
-// router.put("/upload",upload.single("movieFile"),async(req,res)=>{
 
-router.put("/upload",async(req,res)=>{
-    console.log(req.body,"body.............");
-    // const {title,ratings,genre,path}=req.body
-    
-    // const newMovieData={
-    //     title:"",
-    //     ratings:"",
-    //     genera:[],
-    //     path:""
-        
-    // }
-    
-    // const baseURL = `${req.protocol}://${req.get("host")}/images/`;
-    
-    
+router.put("/upload",upload.single("movieFile"),async(req,res)=>{
+    console.log(req.body,"body........dsfdsfdsf.....");
+    const {movieFile,movieId}=req.body
+  
+    const baseURL = `${req.protocol}://${req.get("host")}/images/`;
     const genrresData = req.body.genre.split(",");  //conver to array
-    // console.log(genrresData,"=====sds=====path");
     
-    const newMovieData={
-        movieId:req.body.movieId,
+    const updateMovieData={
         title:req.body.title,
         ratings:req.body.ratings,
         genera:genrresData,
-        url:baseURL+req.file.filename,
+        url:movieFile || baseURL+req.file.filename,
+        // url:baseURL+req.file.filename,
     }
-    console.log(newMovieData,"finished data........");
-    // const movieList = await Movies.create(newMovieData);
+    
+    // when update photo delete old photo
+    if("file" in req){
+        console.log("====have==========file");
+        const urldeletePhoto = await Movies.findOne({ _id: movieId })
+        var fileName = urldeletePhoto.url.substring(urldeletePhoto.url.length - 37)
+        fs.unlinkSync(`./public/images/${fileName}`);  //delete photo
+    }
+    
+    const movieList = await Movies.findByIdAndUpdate(movieId,updateMovieData,{new:true});
 
     res.json({
         message:"Image uploaded",
-        path:baseURL+req.file.filename,
+        // path:baseURL+req.file.filename,
         movieList:movieList
     })
             // res.status(200).json(movieList);

@@ -36,7 +36,7 @@ export const AddEditMovie = () => {
 
   // const API_URL_EDIT="http://localhost:3007/api/movies/movieEdit/64f8a1422cd7c3aedc3771b3"
 
-  const [checkedstate, setCheckedState] = useState({ genre: [""] });
+  const [checkedstate, setCheckedState] = useState({ genre: [] });
   const { errors, SettErrorObject, DeleteErrorObj, EorrrArrayLength } =
     useContext(ErrorObjectContext);
   const [impagePreview, setImagePreview] = useState("");
@@ -50,6 +50,7 @@ export const AddEditMovie = () => {
   const [image, setImage] = useState("");
 
   const addNewMovie = async (event) => {
+   
     event.preventDefault();
     // if(params.movieId){
     //   console.log("Update",title);
@@ -78,7 +79,7 @@ export const AddEditMovie = () => {
     // }else{
 
     // event.preventDefault();
-    console.log(checkedstate.genre, "New genre------from submit------");
+    // console.log(checkedstate.genre.length[0], "New genre------from submit------");
     let method = "POST";
     if (!image) {
       DeleteErrorObj("myfile");
@@ -88,7 +89,7 @@ export const AddEditMovie = () => {
       DeleteErrorObj("title");
       SettErrorObject("title", "Need Title");
       return;
-    } else if (!checkedstate.genre.length) {
+    } else if (checkedstate.genre.length === 1) {
       DeleteErrorObj("gonre");
       SettErrorObject("gonre", "Select gonres");
       return;
@@ -109,7 +110,7 @@ export const AddEditMovie = () => {
         method = "PUT";
       }
 
-      console.log(movieData, "========movie data");
+      // console.log(movieData, "========movie data");
 
       // Add Movie
       const response = await axios(API_URL, {
@@ -119,14 +120,7 @@ export const AddEditMovie = () => {
         },
         data: movieData,
       });
-
-      //  response = await axios(API_URL, {
-      //   method: method,
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      //   data: movieData,
-      // });
+      // console.log(response,"===========response");
       if (!response) {
         return;
       } else {
@@ -134,10 +128,31 @@ export const AddEditMovie = () => {
 
         inputRef.current.value = "";
         setImagePreview(URL.revokeObjectURL(impagePreview));
+        setCheckedState({genre:[]})
 
         uncheckAll();
       }
     }
+      //  response = await axios(API_URL, {
+      //   method: method,
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      //   data: movieData,
+      // });
+
+      // console.log(response,"===========response");
+      // if (!response) {
+      //   return;
+      // } else {
+      //   setTitle("");
+
+      //   inputRef.current.value = "";
+      //   setImagePreview(URL.revokeObjectURL(impagePreview));
+
+      //   uncheckAll();
+      // }
+    
   };
   // };
 
@@ -147,6 +162,8 @@ export const AddEditMovie = () => {
 
   const inputTextHandleChange = (event) => {
     setTitle(event.target.value);
+
+    // console.log(event.target.value);
     if (event.target.value != "") {
       DeleteErrorObj("title");
     }

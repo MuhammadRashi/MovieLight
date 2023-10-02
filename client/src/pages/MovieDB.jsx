@@ -10,9 +10,6 @@ export const MovieDB = () => {
   // const API_URL="http://localhost:3007/api/movies";
   const API_URL="http://localhost:3007/api/movies/movieWithGenre";
 
-  
-
-  
   // const [movieList,setMovieList]=useState();
   const [movieList,setMovieList]=useState([]);
   

@@ -86,16 +86,16 @@ export const CheckBoxGenre = ({genreValue,checkedstate,setCheckedState,checkRef,
               <input
                 key={gnitem._id}
                 type="checkbox"
-                name={"genre" || ''} 
-                id={gnitem._id || ''}
-                value={gnitem._id || ''}
+                name={"genre"} 
+                id={gnitem._id}
+                value={gnitem._id}
                 className="w-6 h-6 checked:bg-blue-500"
                 onChange={handleCheckBox}
                 // ref={(element) => tempRef.current.push(element)}
                 // ref={(element) => tempRef.current.push(element)}
                 ref={(element) => checkRef.current[index]=element}           // used for dynamic ref
 
-                checked={checkedstate.genre ? checkedstate.genre.find((gon)=> gon === gnitem._id) : null}
+                checked={checkedstate.genre ? checkedstate.genre.find((gon)=> gon === gnitem._id) : false}
 
               />
               <label htmlFor={gnitem._id}>{gnitem.title} </label>
