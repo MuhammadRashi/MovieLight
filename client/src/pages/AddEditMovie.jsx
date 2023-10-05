@@ -13,9 +13,10 @@ import { useGonre } from "../hooks/useGonre";
 import axios from "axios";
 import { ErrorObjectContext } from "../context/ErrorObject";
 import { ErrorDiv } from "../components/ErrorDiv";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const AddEditMovie = () => {
+  const navigate= useNavigate()
   const params = useParams();
 
   // if(params.movieId){
@@ -129,30 +130,12 @@ export const AddEditMovie = () => {
         inputRef.current.value = "";
         setImagePreview(URL.revokeObjectURL(impagePreview));
         setCheckedState({genre:[]})
+        setRatingValue(0);
 
         uncheckAll();
+        navigate(`/`)
       }
     }
-      //  response = await axios(API_URL, {
-      //   method: method,
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      //   data: movieData,
-      // });
-
-      // console.log(response,"===========response");
-      // if (!response) {
-      //   return;
-      // } else {
-      //   setTitle("");
-
-      //   inputRef.current.value = "";
-      //   setImagePreview(URL.revokeObjectURL(impagePreview));
-
-      //   uncheckAll();
-      // }
-    
   };
   // };
 
@@ -192,92 +175,7 @@ export const AddEditMovie = () => {
       setImage(editMovie.data.url);
       setCheckedState({ genre: [...editMovie.data.genera] });
       // -------------------*****-------------------
-      // checkRef.current.map((mp) => {
-      //   console.log(mp.value,"===========mpppppppppp");
-      //   checkedstate.genre.map((gn) => {
-
-      //     console.log(gn,"===========gn........");
-
-      //     if (mp.value === gn) {
-      //       mp.checked = true;
-
-      //     }
-      //   });
-      // });
-
-      // -------------------*****-------------------
-
-      
-      // console.log(checkBoxParents, "==========par");
-      // console.log(checkedstate.genre, "===sssssssssss");
-      
-      // checkedstate.genre.map((fns) => {
-        //   console.log(fns, "0000000000");
-        //   console.log(fns, "0000000000");
-
-      //   // [...checkBoxParents].forEach((element) => {
-
-      //   //      if (element === genre)
-      //   //     element.firstChild.checked = true;
-
-      //   // })
-      
-      //   checkBoxParents.map((chkprnt) =>
-      //     console.log(chkprnt, "=================")
-      //   );
-      // });
-      
-      // console.log(element.children.firstChild,"=========div=");
-      // console.log(element.firstChild.children[0].value, "=========one=");
-      // element.children[1].children[0].firstChild.checked = true;
-      // console.log(element.firstChild.value, "=========second=");
-      // console.log(genre, "===0000000000000genre");
-      // const checkBoxParents =await chkboxGroup.current.children[0].children;
-      // [...checkBoxParents].forEach((element) => { 
-      //   checkedstate.genre.forEach((genre) => {
-      //     if (element.firstChild.children[0].id === genre)
-      //     element.firstChild.children[0].checked = true;
-      //   });
-      // });
-        // );
-
-        // genre.forEach((genre) => {
-        //   console.log(genre, "===0000000000000genre");
-        //   // if (element === genre)
-        //   //   element.firstChild.checked = true;
-        // });
-
-
-
-
-      // [...checkBoxParents].forEach((element) => {
-      //   // console.log(element.children.firstChild,"=========div=");
-      //   console.log(element.firstChild,"=========second=");
-      //   element.children[1].children[0].firstChild.checked=true
-      //  genre.forEach((genre) => {
-      //    console.log(genre,"===0000000000000genre");
-      //     // if (element === genre)
-      //     //   element.firstChild.checked = true;
-      //   });
-      // });
-
-      // const checkBoxParents = chkboxGroup.current.children;
-
-      // console.log(checkBoxParents,"==========par");
-      // [...checkBoxParents].forEach((element) => {
-      //   console.log(element.children[2].children[0].firstChild,"=========div=");
-      //   genre.forEach((genre) => {
-      //     if (element.children.children.value === genre)
-      //       element.firstChild.checked = true;
-      //   });
-      // });
-
-      // setCheckedState(editMovie.data.genera)
-
-      // setCheckedState((prev) => ({
-      //   ...prev,
-      //   ["genre"]: newGenre,
-      // }));
+    
     } catch (error) {
       console.log(error.message);
     }

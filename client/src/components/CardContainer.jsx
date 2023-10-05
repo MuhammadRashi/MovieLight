@@ -1,6 +1,4 @@
 import React from "react";
-import { FaPen, FaTrashAlt, FaStar } from "react-icons/fa";
-import { RatingComponent } from "./RatingComponent";
 
 export const CardContainer = ({children}) => {  //  genre,rate,editClick,DeleteClick
   

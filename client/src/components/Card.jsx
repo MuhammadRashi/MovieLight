@@ -25,7 +25,7 @@ export const Card = ({ movie }) => {
             <div className="flex items-center space-x-1 ">
               {/* <img src="images/bookmark.svg" alt=""/> */}
               <FaPen className="text-3xl opacity-70 hover:opacity-100" onClick={()=>navigate(`/new/${movie._id}`)}  />
-              <FaTrashAlt className="text-3xl opacity-70 hover:opacity-100" />
+              <FaTrashAlt className="text-3xl opacity-70 hover:opacity-100" onClick={()=>navigate(`/delete/${movie._id}`)} />
             </div>
           </div>
 

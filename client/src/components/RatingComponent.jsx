@@ -8,6 +8,9 @@ export const RatingComponent = ({rate}) => {
         {[...Array(rat)].map((star,index) => {
           return <FaStar className=" fill-yellow-400 duration-300 " key={index}/>;
         })}
+
+
+      
       </p>
     </>
   );

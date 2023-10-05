@@ -71,6 +71,12 @@ router.put("/genreUpdate/:movieId", async (req, res) => {
         })
     }
 })
+
+
+
+
+
+
 // get All movies with genre   // populate..........
 router.get("/movieWithGenre/",async(req, res)=>{
     try {
@@ -85,6 +91,28 @@ router.get("/movieWithGenre/",async(req, res)=>{
 
 
         const movieList = await Movies.find().select("title ratings url _id").populate("genera",'title _id');
+        res.status(200).json(movieList);
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+        })
+    }
+})
+
+
+router.get("/movieWithGenre/:movieId",async(req, res)=>{
+    try {
+        // const movieList = await Movies.find()
+        
+        // const movieList = await Movies.find().select("title ratings -_id").populate("genera",'title -_id');
+        // .where("genera")
+        // .ne([])                    it display without empty genre
+
+
+        // .populate("genera",'title');
+
+
+        const movieList = await Movies.findOne({ _id: req.params.movieId }).populate("genera",'title _id')
         res.status(200).json(movieList);
     } catch (error) {
         res.status(400).json({
@@ -211,7 +239,7 @@ router.put("/upload",upload.single("movieFile"),async(req,res)=>{
     
     // when update photo delete old photo
     if("file" in req){
-        console.log("====have==========file");
+        // console.log("====have==========file");
         const urldeletePhoto = await Movies.findOne({ _id: movieId })
         var fileName = urldeletePhoto.url.substring(urldeletePhoto.url.length - 37)
         fs.unlinkSync(`./public/images/${fileName}`);  //delete photo
@@ -225,6 +253,28 @@ router.put("/upload",upload.single("movieFile"),async(req,res)=>{
         movieList:movieList
     })
             // res.status(200).json(movieList);
+})
+
+
+// Delete Movie
+
+router.delete("/delete/:movieId",async(req,res)=>{
+    try {
+
+        console.log("Delete",req.params.movieId);
+        const urldeletePhoto = await Movies.findOne({ _id: req.params.movieId })
+        var fileName = urldeletePhoto.url.substring(urldeletePhoto.url.length - 37)
+        fs.unlinkSync(`./public/images/${fileName}`);  //delete photo
+
+        const deleteMovie=await Movies.findByIdAndDelete(req.params.movieId,{new:true});
+        res.json({
+            message:"Movie Deleted",
+            deleteMovie:deleteMovie
+        });
+        
+    } catch (error) {
+        
+    }
 })
 
 module.exports = router;
