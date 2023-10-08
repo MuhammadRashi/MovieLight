@@ -261,7 +261,7 @@ router.put("/upload",upload.single("movieFile"),async(req,res)=>{
 router.delete("/delete/:movieId",async(req,res)=>{
     try {
 
-        console.log("Delete",req.params.movieId);
+        // console.log("Delete",req.params.movieId);
         const urldeletePhoto = await Movies.findOne({ _id: req.params.movieId })
         var fileName = urldeletePhoto.url.substring(urldeletePhoto.url.length - 37)
         fs.unlinkSync(`./public/images/${fileName}`);  //delete photo
@@ -275,6 +275,15 @@ router.delete("/delete/:movieId",async(req,res)=>{
     } catch (error) {
         
     }
+})
+
+router.get("/gonreUsed/:gonreId",async(req,res)=>{
+
+    const {gonreId}=req.params;
+
+    const isGenreExist=await Movies.findOne({title:req.body.title});
+
+
 })
 
 module.exports = router;

@@ -13,7 +13,7 @@ export const InputSecond = ({
     <>
       <div className="flex flex-col justify-center  p-3 rounded-lg">
         <label htmlFor="inpname" className="font-bold flex justify-center">
-          Title
+          {placeHolder}
         </label>
         <input
           type="text"

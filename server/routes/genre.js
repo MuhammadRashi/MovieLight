@@ -34,4 +34,40 @@ generRouter.post("/",async(req,res)=>{
     }
 })
 
+generRouter.put("/",async(req,res)=>{
+    
+    
+    try {
+        const {genereID,title}=req.body
+    const updateData={
+        title
+    }
+    const gonre = await Genres.findByIdAndUpdate(genereID,updateData,{new:true});
+    res.status(200).json(gonre);
+    
+} catch (error) {
+    res.status(400).json({
+        message:error.message,
+    })
+    
+}
+
+})
+
+generRouter.delete("/",async(req,res)=>{
+    try {
+        const {genereID}=req.body
+
+        const deleteGonre=await Genres.findByIdAndDelete(genereID);
+        res.status(200).json(deleteGonre);
+        console.log("Deleted");
+        
+    } catch (error) {
+        res.status(400).json({
+            message:error.message,
+        })
+    }
+})
+
+
 module.exports=generRouter;
