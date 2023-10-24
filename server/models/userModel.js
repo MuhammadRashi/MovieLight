@@ -1,21 +1,31 @@
 const mongoose=require('mongoose');
 
 const userSchema =new mongoose.Schema({
-    name:{
+    username:{
         type:String,
         required:true,
-        trim:true,
+        trim:true
     },
-    age:{
-        type:Number,
-        required:true,
-    },
-    gender:{
+    password:{
         type:String,
         required:true,
-        lowercase:true,
-        edum:["male","female"] /// enum used for  get one data from array [male of female]
+        trim:true
     },
+    // name:{
+    //     type:String,
+    //     required:true,
+    //     trim:true,
+    // },
+    // age:{
+    //     type:Number,
+    //     required:true,
+    // },
+    // gender:{
+    //     type:String,
+    //     required:true,
+    //     lowercase:true,
+    //     edum:["male","female"] /// enum used for  get one data from array [male of female]
+    // },
     // Referance relation
     movie:[{
         type:mongoose.Schema.Types.ObjectId,

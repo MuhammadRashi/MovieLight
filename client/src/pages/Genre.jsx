@@ -8,7 +8,8 @@ import { useGonre } from "../hooks/useGonre";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { VscReactions } from "react-icons/vsc";
 import axios from "axios";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // MdOutlineNewLabel
 export const Genre = () => {
   const inputRef = useRef(null);
@@ -17,6 +18,7 @@ export const Genre = () => {
   const [editgenreName, setEditGenreName] = useState("");
   const [deletegenreName, setDeletegenreName] = useState("");
   // const [editgenre, setEditGenre] = useState({});
+  const [messageData, setMessageData] = useState("");
   const { getGonreList, genre } = useGonre();
 
   const API_GONRE = "http://localhost:3007/api/genre";
@@ -28,23 +30,24 @@ export const Genre = () => {
   };
 
   const changeGenre = async () => {
-    // console.log(btunRef.current.value,"===========dfad======")
+
+
 
     if (editgenreName) {
       // Update code
-      console.log("Update Code");
+      // console.log("Update Code");
       try {
-        const updatedData={
-          genereID:editgenreName,
-          title:genreName
-        }
+        const updatedData = {
+          genereID: editgenreName,
+          title: genreName,
+        };
 
         const response = await axios(API_GONRE, {
           method: "PUT",
           data: updatedData,
         });
         if (response) {
-          console.log("Updated", response);
+          // console.log("Updated", response);
           getGonreList();
           inputRef.current.value = "";
           setEditGenreName("");
@@ -52,35 +55,43 @@ export const Genre = () => {
       } catch (error) {
         console.log(error.message);
       }
-
     } else if (deletegenreName) {
-      console.log("Delete Code");
+      // console.log("Delete Code");
       // Delete Code
 
       try {
-        const deleteID={
-          genereID:deletegenreName,
-         
-        }
+        const deleteID = {
+          genereID: deletegenreName,
+        };
 
         const response = await axios(API_GONRE, {
           method: "DELETE",
           data: deleteID,
         });
         if (response) {
-          console.log("Deleted", response);
-          getGonreList();
-          inputRef.current.value = "";
-          setDeletegenreName("");
+          // console.log(response.data.message, "-----------------con");
+
+          if (response.data.message === "found") {
+            const test = [];
+            response.data.existMovie.forEach((element) =>
+              test.push(element.title)
+            );
+            setMessageData(
+              "This Genre used movies -- " + test.join(" | ")
+              );
+              toast.error(messageData);
+          } else {
+            getGonreList();
+            inputRef.current.value = "";
+            setDeletegenreName("");
+          }
         }
       } catch (error) {
         console.log(error.message);
       }
-
-
-
-    } else {
+    } else if(genreName) {
       // New Gonre
+     
       try {
         const response = await axios(API_GONRE, {
           method: "POST",
@@ -95,6 +106,10 @@ export const Genre = () => {
         console.log(error.message);
       }
     }
+    else{
+      toast.error(messageData);
+      setMessageData("Enter Valid Data");
+    }
   };
 
   const genreNew = () => {
@@ -105,12 +120,11 @@ export const Genre = () => {
 
   const genreEdit = (gon) => {
     setEditGenreName(gon._id);
-    console.log("==========id", gon);
+    // console.log("==========id", gon);
     inputRef.current.value = gon.title;
     setGenreName(gon.title);
-    
-    // setEditGenre(gon)
 
+    // setEditGenre(gon)
 
     setDeletegenreName("");
   };
@@ -148,21 +162,25 @@ export const Genre = () => {
                   ref={inputRef}
                   disabled={deletegenreName}
                 />
-                <button
-                  className="bg-black px-14 h-11 md:h-14 text-white rounded-md shadow-xl text-md font-normal border border-black duration-200 hover:bg-white hover:text-black"
-                  onClick={changeGenre}
-                  ref={btunRef}
-                >
-                  {editgenreName
-                    ? "Update"
-                    : deletegenreName
-                    ? "Delete"
-                    : "Save"}
-                </button>
-                <VscReactions
-                  className="text-3xl w-9 h-14 bg-white p-1 ml-1 rounded hover:text-red-700 hover:font-bold"
-                  onClick={() => genreNew()}
-                />
+                <ToastContainer />
+                <div className="flex">
+                  <button
+                    className="bg-black px-14 w-full h-11 md:h-14 text-white rounded-md shadow-xl text-md font-normal border border-black duration-200 hover:bg-white hover:text-black"
+                    onClick={changeGenre}
+                    ref={btunRef}
+                  >
+                    {editgenreName
+                      ? "Update"
+                      : deletegenreName
+                      ? "Delete"
+                      : "Save"}
+                  </button>
+
+                  <VscReactions
+                    className="text-3xl w-9 md:h-14 h-11 bg-white p-1 ml-1  rounded hover:text-red-700 hover:font-bold"
+                    onClick={() => genreNew()}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-3 mt-3">
@@ -195,6 +213,7 @@ export const Genre = () => {
                   </div>
                 ))}
               </div>
+              <ToastContainer />
             </LayoutSecond>
           </div>
         </div>

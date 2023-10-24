@@ -144,7 +144,9 @@ export const AddEditMovie = () => {
   };
 
   const inputTextHandleChange = (event) => {
-    setTitle(event.target.value);
+        
+
+    setTitle(event.target.value.toLowerCase());
 
     // console.log(event.target.value);
     if (event.target.value != "") {
@@ -237,7 +239,7 @@ export const AddEditMovie = () => {
               </div>
               <ErrorDiv keyArray={"gonre"} />
               {/* <div className="text-center">test</div> */}
-              <ButtonLayout title={"Submit"} clik={addNewMovie} />
+              <ButtonLayout title={"Submit"} clik={addNewMovie} myColor={"blck"}/>
             </LayoutSecond>
           </div>
         </div>

@@ -1,6 +1,11 @@
 const express=require('express');
 const router=express.Router();
 const Users=require('../models/userModel');
+// const bcrypt=require('bcrypt');
+const { comparePasswordHash, generatePasswordHash } = require('../utils/bcrypt');
+const { generateAccessToken } = require('../utils/jwt');
+
+
 
 router.get("/",async(req,res)=>{
    try {
@@ -12,8 +17,74 @@ router.get("/",async(req,res)=>{
     res.status(400).json({
         message:error.message,
     })
-   }
+   } 
 
+})
+
+// sign up
+
+router.post("/signup",async(req,res)=>{
+    try {
+        const {username,password}=req.body;
+
+        const isExist=await Users.findOne({username});
+        if(isExist){ 
+            return res.status(400).json({message:"User already Exist"})
+        }
+        else{
+
+        //   const hashedpassword= await bcrypt.hash(password,10)
+          const hashedpassword= await generatePasswordHash(password)
+          await Users.create({username,password:hashedpassword})
+          res.json({message:"Account hasbeen created"})
+        //   console.log(userDetails,"==========")
+
+        }
+        
+    } catch (error) {
+        res.status(400).json({
+            message:error.message,
+        })
+        
+    }
+})
+
+
+router.post("/login",async(req,res)=>{
+    try {
+        const {username,password}=req.body;
+
+        const user=await Users.findOne({username});
+
+        // chek user exist or not
+        if(!user){
+           return res.json({
+                message:"Username/Password not Exist",
+            })
+        }
+        // verify password
+    //    const validpassword=await bcrypt.compare(password,user.password)
+       const validpassword=await comparePasswordHash(password,user.password);
+
+    //    Password not match
+       if(!validpassword){
+         return res.status(400).json({
+            message:"Username/Password not Exist",
+        }) }
+        
+        // match passowrd
+        // set token
+
+            const accessToken=generateAccessToken(user._id);
+            // res.status(200).json({message:"You have logged in"});
+            res.status(200).json({_id:user._id,
+            user:user.username,
+            accessToken:accessToken});
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+        
+    }
 })
 
 router.post("/",async(req,res)=>{

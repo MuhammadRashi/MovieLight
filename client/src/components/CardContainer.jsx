@@ -5,8 +5,8 @@ export const CardContainer = ({children}) => {  //  genre,rate,editClick,DeleteC
   return (
     <>
         
-
-      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+  
+      <div className="grid justify-items-start md:gap-1 gap-2 grid-cols-1 self-start  auto-rows-auto md:grid-cols-3 lg:grid-cols-4">
         {/* <!-- image 1 --> */}
         
         {children}

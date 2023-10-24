@@ -3,6 +3,8 @@ const generRouter=express.Router();
 const Genres=require('../models/genreModel');
 const { findOne } = require('../models/userModel');
 
+const Movies = require('../models/movieModel')
+
 generRouter.get("/",async(req,res)=>{
     try {
         const genreList=await Genres.find();
@@ -57,10 +59,22 @@ generRouter.put("/",async(req,res)=>{
 generRouter.delete("/",async(req,res)=>{
     try {
         const {genereID}=req.body
+        const isGenreExist=await Movies.find({genera:genereID}).select("title");
+        if(!isGenreExist.length == 0){
+           return res.json({
+                message:"found",
+                existMovie:isGenreExist
+            });
+    
+        }else{
+            const deleteGonre=await Genres.findByIdAndDelete(genereID);
+            return res.status(200).json({
+                deleteGonre:deleteGonre,
+                message:"Not found"
+            });
+        }
 
-        const deleteGonre=await Genres.findByIdAndDelete(genereID);
-        res.status(200).json(deleteGonre);
-        console.log("Deleted");
+        // console.log("Deleted");
         
     } catch (error) {
         res.status(400).json({
@@ -68,6 +82,34 @@ generRouter.delete("/",async(req,res)=>{
         })
     }
 })
+
+
+// generRouter.get("/gonreUsed/:gonreId",async(req,res)=>{
+
+//     const {gonreId}=req.params;
+
+//     const isGenreExist=await Movies.find({genera:gonreId}).select("title");
+
+
+//     console.log(isGenreExist.length,"============");
+
+//     if(!isGenreExist.length == 0){
+//       res.json({
+//             message:"found",
+//             existMovie:isGenreExist
+//         });
+
+//     }else{
+//         res.json({
+//             message:"Not found",
+//         });
+
+
+//     }
+    
+
+
+// })
 
 
 module.exports=generRouter;

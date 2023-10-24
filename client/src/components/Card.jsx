@@ -11,7 +11,7 @@ export const Card = ({ movie }) => {
   return (
       <div className="relative group">
         <div className="absolute top-0 left-0 right-0 p-2 px-4 text-white bg-opacity-40">
-        <p className="p-2 rounded-md text-lg md:text-xl lg:text-2xl font-bold hover:bg-black hover:bg-opacity-40 hover:md:text-2xl hover:lg:text-3xl hover:md:text-center">{movie.title}</p>
+        <p className="p-2 rounded-md text-lg md:text-xl lg:text-2xl font-bold hover:bg-black hover:bg-opacity-40 hover:md:text-2xl hover:lg:text-3xl hover:md:text-center">{movie.title.toUpperCase()}</p>
         </div>
         <img src={movie.url} alt="" className="w-full rounded-t-md" />
         <div className="absolute bottom-0 left-0 right-0 p-2 px-4 text-white bg-black opacity-0 group-hover:opacity-100 duration-500 bg-opacity-40">

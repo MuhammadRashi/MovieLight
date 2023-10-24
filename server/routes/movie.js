@@ -11,11 +11,15 @@ const app=express();
 // Import the filesystem module
 const fs = require('fs');
 const { url } = require('inspector');
+const { checkAuth } = require('../middlewares/checkAuth');
+
 
 app.use('/images',express.static('public/images'));
 
-router.get("/", async (req, res) => {
+router.get("/",checkAuth, async (req, res) => {
     try {
+
+        console.log("User ID is ",req.userid)
         const movieList = await Movies.find().select("title ratings genera url");
         res.status(200).json(movieList);
     } catch (error) {
@@ -44,7 +48,28 @@ router.post("/", async (req, res) => {
 })
 
 
-// add genre to movies
+// Search
+router.get("/search", async (req, res) => {
+
+    try {
+        // console.log("now ok,,,,,,,,,,,,,",req.query);
+
+
+        // const isMovieExist = await Movies.find({ title: /Man/ })
+        // const moviList = await Movies.find({ title:{$regex:req.body.title}})
+        // const movieList = await Movies.find({title:{$regex:req.body.title}}).select("title ratings url _id").populate("genera",'title _id');
+        const movieList = await Movies.find({title:{$regex:req.query.title}}).select("title ratings url _id").populate("genera",'title _id');
+
+        res.status(200).json(movieList);
+    } catch (error) {
+        res.status(400).json({
+            message: error.message,
+        })
+    }
+})
+
+
+
 router.put("/genreUpdate/:movieId", async (req, res) => {
     // movieID
     // genreID
@@ -277,13 +302,31 @@ router.delete("/delete/:movieId",async(req,res)=>{
     }
 })
 
-router.get("/gonreUsed/:gonreId",async(req,res)=>{
+// router.get("/gonreUsed/:gonreId",async(req,res)=>{
 
-    const {gonreId}=req.params;
+//     const {gonreId}=req.params;
 
-    const isGenreExist=await Movies.findOne({title:req.body.title});
+//     const isGenreExist=await Movies.findOne({genera:gonreId});
 
 
-})
+//     console.log(isGenreExist,"============");
+
+//     if(isGenreExist){
+//         res.json({
+//             message:"found",
+//             deleteMovie:isGenreExist
+//         });
+
+//     }else{
+//         res.json({
+//             message:"Not found",
+//         });
+
+
+//     }
+    
+
+
+// })
 
 module.exports = router;
